@@ -1,0 +1,1 @@
+test conclusion: to save something to the git repository *after* the first commit, it is 3 steps: 1. git add <file>, 2. git commit -m '<describe action>', 3. git push -- with the first commit there are more steps to create the github repository with git remote add origin <https://github.com/adrmac/<repository name>.git, and then specify git push -u origin master
