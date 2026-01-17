@@ -4,18 +4,17 @@ date: 2026-01-16
 ---
 
 My messaging is built on the intersection of accessible data interpretation and agentic AI storytelling. I bridge the gap between complex bioacoustic sensors and intuitive human action.
-• Who I am: A UX Engineer and AI Architect specializing in "data storytelling" for marine conservation.
-• What I do: I build integrated layers that allow for a "multi-dimensional read" of environmental conditions—combining live audio, machine learning detections, and human sightings into actionable insights.
-• What people should hire me for: Developing AI-driven research assistants (RAG/Agentic AI), designing high-fidelity data visualization dashboards, and building full-stack IoT-to-cloud pipelines.
+- **Who I am:** A UX Engineer and AI Architect specializing in "data storytelling" for marine conservation.
+- **What I do:** I build integrated layers that allow for a "multi-dimensional read" of environmental conditions—combining live audio, machine learning detections, and human sightings into actionable insights.
+- **What people should hire me for:** Developing AI-driven research assistants (RAG/Agentic AI), designing high-fidelity data visualization dashboards, and building full-stack IoT-to-cloud pipelines.
 
 Demos from the last few months:
-• Demo 1: The Agentic AI Researcher: Showcasing use of the LlamaIndex agentic framework to perform natural language to SQL queries against the Orcasound database.
-• Demo 2: WebAudioAPI Visualizer: A technical deep dive into building live spectrograms, waveforms, and oscilloscopes in React.
-• Demo 3: IoT to Dashboard: demonstrating the ESP32 stack—from on-device MicroPython to a FastAPI/PostgreSQL backend and React frontend.
+- **Demo 1:** The Agentic AI Researcher: Showcasing use of the LlamaIndex agentic framework to perform natural language to SQL queries against the Orcasound database.- - **Demo 2:** WebAudioAPI Visualizer: A technical deep dive into building live spectrograms, waveforms, and oscilloscopes in React.
+- **Demo 3:** IoT to Dashboard: demonstrating the ESP32 stack—from on-device MicroPython to a FastAPI/PostgreSQL backend and React frontend.
 
 Planned topics:
-• Multi-Modal AI Orchestration: Documenting how the OrcaAgent agentic AI can "reason" across different inputs—integrating PTZ camera fin-detections with acoustic clips to increase localization confidence.
-• The "Conservation Coach": A series on using LLMs to provide personalized recommendations for users based on their location and observations, moving the "Take Action" feature from sketch to deployment.
-• RAG for IoT: Exploring the evolution of the ESP32 project into a more robust "hydrophone deployment kit" that performs semantic analysis.
-• Data Storytelling through "Bouts": Showcasing high-fidelity "storymaps" that combine human commentary, AI detections, and AIS vessel tracks into a shareable narrative for policy makers.
-• React State Management: Implementing Zustand on Orcasound Live, unlocking maps, search, and historical data views
+- **Multi-Modal AI Orchestration:** Documenting how the OrcaAgent agentic AI can "reason" across different inputs—integrating PTZ camera fin-detections with acoustic clips to increase localization confidence.
+- **The "Conservation Coach":** A series on using LLMs to provide personalized recommendations for users based on their location and observations, moving the "Take Action" feature from sketch to deployment.
+- **RAG for IoT:** Exploring the evolution of the ESP32 project into a more robust "hydrophone deployment kit" that performs semantic analysis.
+- **Data Storytelling through "Bouts":** Showcasing high-fidelity "storymaps" that combine human commentary, AI detections, and AIS vessel tracks into a shareable narrative for policy makers.
+- **React State Management:** Implementing Zustand on Orcasound Live, unlocking maps, search, and historical data views
