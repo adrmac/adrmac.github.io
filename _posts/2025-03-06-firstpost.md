@@ -3,7 +3,7 @@ title: "Communications Plan"
 date: 2026-01-16
 ---
 
-My personal brand is built on the intersection of accessible data interpretation and agentic AI storytelling. I bridge the gap between complex bioacoustic sensors and intuitive human action.
+My messaging is built on the intersection of accessible data interpretation and agentic AI storytelling. I bridge the gap between complex bioacoustic sensors and intuitive human action.
 • Who I am: A UX Engineer and AI Architect specializing in "data storytelling" for marine conservation.
 • What I do: I build integrated layers that allow for a "multi-dimensional read" of environmental conditions—combining live audio, machine learning detections, and human sightings into actionable insights.
 • What people should hire me for: Developing AI-driven research assistants (RAG/Agentic AI), designing high-fidelity data visualization dashboards, and building full-stack IoT-to-cloud pipelines.
