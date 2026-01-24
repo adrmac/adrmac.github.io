@@ -1,0 +1,33 @@
+I am envisioning an agentic AI system for Orcasound that would be able to query and interpret raw spectral audio data from the hydrophones, as well as annotation sources such as community listeners, ML listening models like Orcahello, and AIS vessel traffic data. It would also be able to contextualize responses based on a corpus of scientific literature using Retrieval Augmented Generation (RAG).
+
+1. **LLM audio explorer** – a prototype of this should be within reach in the next few months. Previous AI work at the Microsoft Hackathons – like Orcahello, or more recently the CLAP experiment that Bret and I did – relied on embedding raw WAV files, which is computationally expensive and also lacks semantic meaning in the data that an LLM could interpret. Valentina’s student team is working on abstracting audio data into metrics snapshots that capture scientifically relevant features. Following a Retrieval Augmented Generation (RAG) workflow, we can vector-embed this summary information much more cheaply than raw audio, with improved signaling about the meaning of the data, so the LLM can ‘find audio like this.’ We can also sync other data sources for richer snapshots.  
+   1. Raw HLS stream \> Power Spectral Density (PSD) parquet tiles, every 1 sec  
+   2. PSD \> JSON snapshots (broadband / banded SPL, trends, anomalies) at overlapping multi-scale windows, e.g. 30 sec, 5 min, 1 hr, 24 hr  
+   3. External data sources \> snapshots – e.g. AIS vessel data, sightings, listener reports, Orcahello detections, scientist-selected bouts and annotations  
+   4. Snapshots \> LLM assistant – each snapshot is stored as a SQL database row – the embedding model transforms it as a string into a semantic vector representation with \~1400 dimensions, then saves the vector to the SQL row, so the LLM assistant then can search the snapshots by vector-relevance to a user’s question.  
+2. **LLM literature reviewer** – in a second phase, we would go beyond describing what’s happening in the audio, and give the model some awareness about what constitutes problematic conditions for orcas. Modeling the “acoustic masking” profile of a soundscape for a specific species is a complex undertaking, so a more manageable path might be to reference our data against published scientific literature. We would collect a bibliography and embed it semantically, so the LLM assistant can match literature vectors to audio clip vectors when narrating its response.   
+3. **LLM SQL query generator** \- LLMs are good at interpreting trends and patterns, but are known to be bad at calculating quantitative questions precisely. We can augment the chat assistant with the ability to generate a SQL query as needed to answer a user’s question.  
+4. **Agentic AI orchestrator** – we set up a multi-LLM system, where the user-facing LLM parses each prompt and decides what mix of LLM sub-retrieval (snapshots, literature, SQL) best answers the question. This modular approach allows us to refine and improve how the system uses the embedded information, without high-touch retraining of how it does the embeddings like with OrcaHello.  
+5. **Data exploration UI** \- interface design opportunities:  
+   1. Improved spectrogram viewer – we can access stored PSD tiles to draw spectrograms in the canvas. Pre-computing the tiles at different scales enables a smooth zooming experience. (The size and number of PSD visual scales does not need to correspond to the JSON metrics snapshots, but maybe for consistency.)  
+   2. LLM-generated narrative summaries of live feeds, candidates, bouts  
+   3. Long-term analysis visualization \- currently our interface is built around pulling out short arbitrary-length audio clips, we don’t have something currently that shows acoustic conditions over standardized time scales.  
+   4. Chat window \- data visualization with sorting and filtering doesn’t fundamentally change what an analyst might do with SQL queries. LLM data exploration using semantic cues is different. A side-by-side chat window allows direct comparison and interaction between deterministic vs non-deterministic approaches. The LLM would be aware of the data context being visualized, and have the ability to change filters in response to prompts.  
+   5. Evaluating success \- Setting up the RAG pipeline is relatively straightforward but we will need to fine tune the agent orchestrator, maybe by tweaking the snapshot schema, adjusting guidelines for the different LLMs, changing the tool selection logic, or tweaking how much the agent asks for more info.
+
+*Is the system behaving as designed?*
+
+* Does the system choose appropriate analytical tools for different question types?  
+* Can the system responsibly handle incomplete or conflicting evidence?  
+* Does the system combine sources in a relevant and measured way, or just concatenate them?
+
+*How do we know if the system is generating scientifically correct answers?* 
+
+* How well does the system perform in answering benchmark questions with known or independently verifiable answers?  
+* Does the system fairly represent uncertainty, ask for more context where appropriate, and avoid hallucination?
+
+*What does an LLM unlock that classical SQL query analysis does not?*
+
+* Thesis: “The LLM is not about answering questions faster. It is about supporting inquiry when the question itself is not yet well-formed.”  
+* Does the system enable new ways of engaging with the data that are difficult to achieve with dashboards alone?
+
