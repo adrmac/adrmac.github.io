@@ -8,32 +8,32 @@ I spent some time this week sorting out a free / open source stack for adding RA
 * Working repo here \- [esp32\_api](https://github.com/adrmac/esp32_api)  
 * Course examples here \- [google-agentic-ai](https://github.com/adrmac/google-agentic-ai)
 
-Ollama \- downloads open source models and runs them locally
+**Ollama** \- downloads open source models and runs them locally
 
 * Ollama directory of models available: [https://ollama.com/search?c=embedding\&q=embed](https://ollama.com/search?c=embedding&q=embed) 
 
-LLMs \- pretrained models that generate conversational responses to prompts, and can be constrained to specific domains and structured outputs
+**LLMs** \- pretrained models that generate conversational responses to prompts, and can be constrained to specific domains and structured outputs
 
 * gemma2 \- Google’s open weight LLM  
 * llama3 \- Meta’s open weight LLM, NOT related to Ollama  
 * gpt-oss \- Open AI’s open weight LLM 
 
-Text embedding models \- small dedicated models for converting text to vectors so an LLM can read them: 
+**Text embedding models** \- small dedicated models for converting text to vectors so an LLM can read them: 
 
 * bge-m3 or nomic-embed-text
 
-LangChain \- standardized types and language wrapper for AI agents in python and typescript 
+**LangChain** \- standardized types and language wrapper for AI agents in python and typescript 
 
 * langchain-ollama integration \- Makes it simpler to switch between model APIs without changing code   
 * langchain-text-splitters \- packages for splitting up PDFs and websites as embeddable chunks of text with metadata
 
-PostgreSQL \- 
+**PostgreSQL** \- 
 
 * supabase \- not open source but generous free tier cloud db  
 * pgvector \- python extension that enables SQL similarity search  
 * chromaDB \- more advanced storage option specifically for vectors \-- for now using supabase / pgvector instead
 
-RAG bibliography \- starting with a small literature corpus on the subject of indoor environmental sensing for the LLM to consult when providing an answer
+**Retrieval Augmented Generation (RAG) bibliography** \- starting with a small literature corpus on the subject of indoor environmental sensing for the LLM to consult when providing an answer
 
 * [Mobaraki et al.](https://www.mdpi.com/2075-5309/11/8/336), “Application of Low-Cost Sensors for Building Monitoring: A Systematic Literature Review (Buildings 2021\)  
 * [Mobaraki et al.,](https://www.mdpi.com/2075-5309/12/9/1411) “Application of Low-Cost Sensors for Accurate Ambient Temperature Monitoring” (Buildings 2022\)  
