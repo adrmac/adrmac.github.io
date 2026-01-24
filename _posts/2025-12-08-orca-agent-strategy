@@ -1,3 +1,9 @@
+---
+title: "Orca Agent Strategy"
+date: 2026-12-08
+---
+
+
 I am envisioning an agentic AI system for Orcasound that would be able to query and interpret raw spectral audio data from the hydrophones, as well as annotation sources such as community listeners, ML listening models like Orcahello, and AIS vessel traffic data. It would also be able to contextualize responses based on a corpus of scientific literature using Retrieval Augmented Generation (RAG).
 
 1. **LLM audio explorer** – a prototype of this should be within reach in the next few months. Previous AI work at the Microsoft Hackathons – like Orcahello, or more recently the CLAP experiment that Bret and I did – relied on embedding raw WAV files, which is computationally expensive and also lacks semantic meaning in the data that an LLM could interpret. Valentina’s student team is working on abstracting audio data into metrics snapshots that capture scientifically relevant features. Following a Retrieval Augmented Generation (RAG) workflow, we can vector-embed this summary information much more cheaply than raw audio, with improved signaling about the meaning of the data, so the LLM can ‘find audio like this.’ We can also sync other data sources for richer snapshots.  
