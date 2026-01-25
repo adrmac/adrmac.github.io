@@ -1,6 +1,6 @@
 ---
 title: "Open Source Agents"
-date: 2026-12-08
+date: 2025-12-08
 ---
 
 I spent some time this week sorting out a free / open source stack for adding RAG / LLM based on ESP32 temperature / humidity data.
