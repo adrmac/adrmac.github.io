@@ -1,5 +1,5 @@
 ---
-title: "Communications Plan"
+title: "Gemini Communications Plan"
 date: 2026-01-16
 ---
 
