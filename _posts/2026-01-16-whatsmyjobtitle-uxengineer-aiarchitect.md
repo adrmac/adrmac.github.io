@@ -1,5 +1,5 @@
 ---
-title: "What's my joh title? UX Engineer / AI Architect"
+title: "What's my job title? UX Engineer / AI Architect"
 date: 2026-01-16
 ---
 
