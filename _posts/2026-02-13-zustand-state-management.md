@@ -30,7 +30,7 @@ Migrating these is actually fairly straightforward, it's mostly like this:
 - Install -- `npm install zustand`
 - Add stores in `/stores/exampleStore.tsx` 
 - Set up store:
-```
+```ts
 import { create } from "zustand";`
 
 type ExampleStore = {
@@ -51,29 +51,29 @@ ___
 Context can trigger unnecessary global re-renders when a local component changes the state. Zustand behaves the same way unless you specifically target one slice of state.
 
 For example if I have a LayoutContext provider, I typically access global state from any nested component within `<LayoutContext>{children}</LayoutContext>` like this:
-```
+```ts
 const { alertOpen, setAlertOpen } = useLayout()
 ```
 But every time I use `setAlertOpen`, I am at risk of triggering re-renders to everything inside the LayoutContext provider. 
 
 With Zustand, the default approach does the same thing:
-```
+```ts
 const { alertOpen, setAlertOpen } = useLayoutStore()
 ```
 This subscribes to the entire store, so the component re-renders if there is a change to any unrelated state in that store (e.g. activeMobileTab, drawerContent). 
 
 To avoid this, we need to subscribe only to specific slices from the store like this:
-```
+```ts
 const alertOpen = useLayoutStore((state) => state.alertOpen);
 const setAlertOpen = useLayoutStore((state) => state.setAlertOpen);
 ```
 This is more verbose, but we can also export a custom hook for each slice like this, to make it more streamlined:
-```
+```ts
 export const useAlertOpen = () => useLayoutStore((s) => s.alertOpen);
 export const useSetAlertOpen = () => useLayoutStore((s) => s.setAlertOpen);
 ```
 In components:
-```
+```ts
 const alertOpen = useAlertOpen();
 const setAlertOpen = useSetAlertOpen();
 ```
@@ -82,25 +82,28 @@ ___
 
 React has a built-in SetStateAction in the useState hook that can take either a value (e.g. 'true') or a function (e.g. (prev) => !prev). Zustand does not have this -- each state setter needs custom handling for different inputs. 
 
-So if I have components that set global state like this:
-```
+So you can make your Zustand state setter functions look like React ones:
+```ts
 setAlertOpen(true);
 ```
-The Zustand store needs to define a state setter that looks like this:
+But you have to define that behavior explicitly in the Zustand store:
+```ts
+setAlertOpen: (value: boolean) => set({ alertOpen: value })
 ```
-setAlertOpen: (value) => set({ alertOpen: value })
+And where React allows you to pass a function like this:
+```ts
+setAlertOpen(prev => !prev);
 ```
-If I want to pass a function, we normally need to define a different state setter.
-In component:
-```
+In Zustand you might define a specific action for that:
+```ts
 toggleAlertOpen()
 ```
 In store:
-```
+```ts
 toggleAlertOpen: () => set((state) => ({ alertOpen: !state.alertOpen }))
 ```
 Or, make the state setter responsive to either a value or function:
-```
+```ts
 setAlertOpen: (input) => 
   set((state) => ({ 
     alertOpen: 
