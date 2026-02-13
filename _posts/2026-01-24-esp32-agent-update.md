@@ -1,5 +1,5 @@
 ---
-title: "ESP32 Agent Update and a Return to Typescript"
+title: "ESP32 Agent Update and Return to Typescript"
 date: 2026-01-29
 ---
 
