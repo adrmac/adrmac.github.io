@@ -1,3 +1,9 @@
+---
+title: "Plans for Orcasound-Next"
+date: 2026-01-14
+---
+
+
 Contemplating plans for [next.orcasound.net](http://next.orcasound.net/) this year. Should I create a separate zulip channel and/or standup? Or start moving features to the production app [live.orcasound.net](http://live.orcasound.net)? 
 
 **Thesis**: accessible interpretation and storytelling layer on marine audio and environmental data that allows for an integrated read of multi-dimensional conditions, in real time or in a research context
