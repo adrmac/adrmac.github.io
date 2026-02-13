@@ -1,3 +1,9 @@
+---
+title: "ESP32 Agent Update and a Return to Typescript"
+date: 2026-01-29
+---
+
+
 This week I’m coming full circle.
 
 I’ve been immersed in backend engineering using Python and SQL the last few months, seeking to fill out my full-stack knowledge, and prototype a complete data system. 
