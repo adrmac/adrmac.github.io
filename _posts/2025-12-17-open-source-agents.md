@@ -1,8 +1,3 @@
----
-title: "Open Source Agents"
-date: 2025-12-17
----
-
 I spent some time this week sorting out a free / open source stack for adding RAG / LLM based on ESP32 temperature / humidity data.
 
 * Working repo here \- [esp32\_api](https://github.com/adrmac/esp32_api)  
