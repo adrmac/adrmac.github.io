@@ -1,11 +1,11 @@
 ---
-title: "ESP32 user interface prototype launch"
+title: "React user interface launch - temperature / humidity anomaly monitor"
 date: 2026-03-10
 ---
 
-This week I am launching a user testing prototype for a temperature/humidity data monitoring interface built with TypeScript / React / Next.js: [https://esp32ui.vercel.app](https://esp32ui.vercel.app). 
+This week I am launching a temperature/humidity data monitoring interface built with TypeScript / React / Next.js: [https://esp32ui.vercel.app](https://esp32ui.vercel.app). 
 
-The app displays live data from the ESP32 sensor in my home office, mediated by a cloud-hosted Python API and PosgreSQL database. It includes a filter set for viewing the data over different time periods, aggregation buckets, and other adjustments. A user-controlled threshold setting defines the list of noteworthy Events. Each Event includes badges showing the severity of anomalies in the three key metrics, and an interpretive description.
+The app displays live data from the ESP32 sensor in my home office, mediated by a cloud-hosted Python API and PosgreSQL database. It includes a filter set for viewing the data over different time periods, aggregation buckets, and other adjustments. A user-controlled threshold setting defines the list of noteworthy Events. Each Event includes badges showing the severity of anomalies across three key metrics, and an interpretive description.
 
 ___
 <img width="1705" height="942" alt="index1" src="https://github.com/user-attachments/assets/5cec38ab-9264-4e1d-a257-db6f82a2d334" />
