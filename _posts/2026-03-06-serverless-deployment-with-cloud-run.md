@@ -3,7 +3,7 @@ title: "Serverless deployment with Cloud Run - repos, containers, and webpacks"
 date: 2026-03-06
 ---
 
-As a front-end / UX engineer I'm generally famiilar with the concept of serverless architecture, but in a contract interview recently I realized I could stand to do a deeper dive. I set up a Python API [esp32_ui](https://github.com/postoccupancy/esp32_ui) / [esp32_api](https://github.com/postoccupancy/esp32_api) earlier this year, and deployed it on Google Cloud Run, a serverless platform. I'll walk through some of the finer points and write up the contextual research I'm doing to understand it better.
+As a front-end / UX engineer I'm generally famiilar with the concept of serverless architecture, but in an interview recently I realized I could stand to do a deeper dive. I set up a Python API [esp32_ui](https://github.com/postoccupancy/esp32_ui) / [esp32_api](https://github.com/postoccupancy/esp32_api) earlier this year, and deployed it on Google Cloud Run, a serverless platform. I'll walk through some of the finer points and write up the contextual research I'm doing to understand it better.
 
 A quick definition -- "serverless" in a cloud architecture context means a backend API that is hosted in such a way that it doesn't require a server running 24-7. Serverless processes can be "spun up" on demand, then go back to zero, after storing whatever data they might need for another time in a separate database. This makes them "stateless," as opposed to "stateful." The tradeoff between serverless vs. always-on virtual machine is essentially about how frequently processes are run, how much persistent storage or configuration is needed, and whether it makes more sense to pay for cloud compute on-demand or as an indefinite subscription.
 
