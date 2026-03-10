@@ -1,5 +1,5 @@
 ---
-title: "React user interface launch - temperature / humidity anomaly monitor"
+title: "React user interface - temperature / humidity anomaly monitor"
 date: 2026-03-10
 ---
 
