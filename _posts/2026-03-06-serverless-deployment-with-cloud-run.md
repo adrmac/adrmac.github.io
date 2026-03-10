@@ -3,44 +3,46 @@ title: "Serverless deployment with Cloud Run - repos, containers, and webpacks"
 date: 2026-03-06
 ---
 
-I had a job interview last week where I took some questions on serverless architecture. As a front-end / UX engineer I'm generally famiilar with the concept, and when I set up a Python API [esp32_api](https://github.com/postoccupancy/esp32_ui) / [esp32_api](https://github.com/postoccupancy/esp32_api) earlier this year, I deployed it on Google Cloud Run, a serverless platform. But I haven't done as much of a deep dive into the details and tradeoffs of it as maybe I should. So here are some takeaways from my experience with serverless cloud architecture so far. 
+As a front-end / UX engineer I'm generally famiilar with the concept of serverless architecture, but in a contract interview recently I realized I could stand to do a deeper dive. I set up a Python API [esp32_ui](https://github.com/postoccupancy/esp32_ui) / [esp32_api](https://github.com/postoccupancy/esp32_api) earlier this year, I deployed it on Google Cloud Run, a serverless platform. So I'll walk through some of the finer points and write up the contextual research I'm doing to understand it better.
 
 A quick definition -- "serverless" in a cloud architecture context means a backend API that is hosted in such a way that it doesn't require a server running 24-7. Serverless processes can be "spun up" on demand, then go back to zero, after storing whatever data they might need for another time in a separate database. This makes them "stateless," as opposed to "stateful." The tradeoff between serverless vs. always-on virtual machine is essentially about how frequently processes are run, how much persistent storage or configuration is needed, and whether it makes more sense to pay for cloud compute on-demand or as an indefinite subscription.
 
-These are mostly backend decisions, and as a front-end/UX engineer, the interface for a serverless API may not differ much from a server. But it's important to know that serverless platforms can have a 'cold start' when spinning up for the first time. If the UI is slow, is it your React code, or is it the serverless container spinning up? Are you accounting for that in the UX loading states? For a prolonged user session, do you need to keep the container warm?
+These are mostly backend decisions, and as a front-end/UX engineer, the interface for a serverless API may not differ much from what I'm used to. It's important to know that serverless platforms can have a 'cold start' when spinning up for the first time. If the UI is slow, is it your React code, or is it the serverless container spinning up? Are you accounting for that in the UX loading states? For a prolonged user session, do you need to keep the container warm?
 
-I will also walk through the process of setting up a serverless container in Cloud Run, explaining concepts along the way.
 
 **About containers**
 
-The first question in the Cloud Run deployment UI is whether to 'Connect a repository,' or 'Deploy a container' -- either way, the app will deploy inside a container. 
+Let's talk about what a container actually is. The first question in the Cloud Run deployment UI is whether to 'Connect a repository,' or 'Deploy a container' -- either way, the app will deploy inside a container. 
 
 A container is an encapsulated runtime environment with all the necessary system dependencies for an app to run. 
 
-In my case, I'm going for development velocity and an iterative source-to-production workflow, so I want to connect my GitHub repo directly. This means Cloud Run automatically builds a container for me, and rebuilds it whenever I push new updates.
+In my case, I'm going for development velocity and an iterative source-to-production workflow. I don't want to plow through a lot of config to get my app running. I want to connect my GitHub repo directly. This means Cloud Run will builds a container for me, and rebuild it whenever I push new updates to my GitHub repo.
 
-The alternative would be to deploy from an existing container, which I might do if I had a more complex app requiring a specific system environment. Right now, containerization for my esp32_api app is optional--I'm using standard Python packages that can be readily installed--but might be convenient depending on who I'm working with. The [Orcasound](https://github.com/orcasound/orcasite) app is containerized to specifically run with Linux OS, Elixir, Node, Python, Postgres, and various other system libraries, to make sure that all developers are working with the same toolset. A large company might containerize to ensure security and compliance. 
+The alternative would be to deploy from an existing container, which I might need to do if I had a more complex app requiring a specific system environment. Right now, creating a container environment for my esp32_api app is optional--I'm using standard Python packages that can be readily installed from many different OS systems. The [Orcasound](https://github.com/orcasound/orcasite) app has a container to specifically run Linux OS, Elixir, Node, Python, Postgres, and various other system libraries, to make sure that all developers are working with the same toolset. A large company might containerize for security and compliance. 
 
-This doesn't mean the Orcasound container would necessarily be deployable in Cloud Run -- it wouldn't be, because it's an always-on server (deployed on Heroku, see note below) -- but it is an example of an app with an existing container. If I went this route, I would need to first store the container to a registry like the Google Artifact Registry. 
+Just because Orcasound has a container doesn't mean it would be deployable on Cloud Run -- it wouldn't be, because it's an always-on server (deployed on Heroku, see note below) -- but it is an example of an app I work on inside a container. If I ever needed to deploy a container to Cloud Run, I would need to create it and store to a registry like the Google Artifact Registry. 
 
 **About virtual machines**
 
-Virtual machines are cloud servers. When companies say they are going "serverless" they might mean they are moving from an on-premises server to the cloud, while still using a "serverful" architecture.
+Virtual machines are cloud servers. When companies say they are going "serverless" they might mean they are moving from an on-premises server to the cloud. But in fact this is still a "serverful" architecture.
 
-Orcasound has a serverful cloud architecture using Heroku, a managed service that runs on top of an Amazon Web Services (AWS) EC2 virtual machine. Instead of exposing the underlying VM, Heroku provides Dynos, which are isolated, lightweight Linux containers that operate like always-on VMs. Multiple customers' Dynos share the same large VM. Dynos need to boot up a full Linux environment, so don't start and stop instantly like a serverless container. 
+Orcasound has a serverful architecture using Heroku. This is a managed platform that runs on top of Amazon Web Services (AWS) EC2, a large virtual machine. Each Heroku customer gets their own container called a Dyno that operates like an always-on VM, while under the hood it shares a large VM with other customers. Each Dyno boots up a full Linux system environment, so it can't start and stop instantly like a serverless container. 
 
-By contrast, the serverless architecture for ESP32_api uses Cloud Run, a managed service within Google Cloud Platform (GCP). Instead of a large VM with many tenants, Cloud Run runs each container in its own proprietary Google-managed gVisor sandbox on a shared Google OS. Google keeps a massive 
-pool of "warm" resources ready to execute code at a millisecond's notice. 
+**About serverless platforms**
+
+Instead of a VM, Cloud Run uses a proprietary stack where each container lives in its own Google-managed gVisor sandbox. Google keeps a massive pool of "warm" resources ready to execute code at a millisecond's notice, as long as the code is "stateless" and can go back to nothing. AWS App Runner is a direct competitor to Cloud Run, although it lacks a 'zero' state and requires at least one instance. 
+
+These platforms are for deploying an entire "serverless web server" like an API, but there is another class of platforms for "serverless functions" -- such as AWS Lambda. These are designed for short-lived, event-driven tasks -- so could be an option for ESP32 sensor posting data.
 
 **About cold starts**
 
-Because my esp32_api serverless container receives data every 2 seconds from my sensor, it most likely stays alive and never spins down -- idle time is about 15 seconds. This means the React UI might benefit from accessing an already-live container without cold start -- until there is enough traffic that Cloud Run needs to cold start a new container to handle concurrent load.
+Because my esp32_api serverless container receives data every 2 seconds, it most likely stays alive and never spins down -- idle time is about 15 seconds. This means the React UI might benefit from accessing an already-live container without cold start -- until there is enough traffic that Cloud Run needs to cold-start a new container to handle concurrent load.
 
 To monitor cold starts in GCP:
 - Cloud Run Metrics Tab: Look at the "Container Instance Count" graph. If you see the line drop to 0 and then jump to 1, the first request at that "jump" was a cold start.
 - Cloud Logging: Search your logs for the phrase `Defaulting to latest available Python runtime`. This line appears during the build/start phase. More importantly, look for requests with a very high latency compared to others. A typical request might take 50ms, while a cold start might take 2–5 seconds.
 
-There is also a trick for ensuring the container never cold starts -- set 'minimum instances' to 1 so it never scales to 0. This results in a small minimum monthly fee ($1-5/mo).
+There is also a trick for ensuring the container never cold starts -- set 'minimum instances' to 1 so it never scales to 0. This results in a small minimum monthly fee ($1-5/mo). AWS App Runner defaults to 1 and doesn't allow 0.
 
 **About Dockerfiles**
 
@@ -48,18 +50,18 @@ Cloud Run asks whether to build the container based on a Dockerfile I provide, o
 
 A Dockerfile is a set of instructions for how to build a container -- specifying an exact OS, Python version, dependency installation command (e.g. `pip install -r requirements.txt` is the default), and system-level libraries like maybe `ffmpeg` for audio processing or `libpq` for databases that a standard buildpack might miss.
 
-Right now I don't have specific system dependencies. My app uses standard Python with FastAPI and should work in any OS. I'm not currently doing any audio processing, although I might want that in the future. For now, I want to keep it simple. So I take the webpack route and accept the defaults. 
+Right now I don't have specific system dependencies beyond the Python version. I'm not currently doing any audio processing, although I might want that in the future. For now, I want to keep it simple. So I take the webpack route and accept the defaults. 
 
 **About webpacks**
 
-Using the default webpack, there are some assumptions and gotchas that are good to be aware of. 
+Even with the default webpack, there are some assumptions and gotchas that are good to be aware of. 
 
-1. The Python version -- this one slipped past me as a backend noob. While I was familiar with the convention of documenting Python package dependencies in a `requirements.txt` file, I didn't realize that this only captures Python packages, not the Python version. For this, Cloud Run looks for a separate file called `.python-version` -- which is the file that the commonly used `pyenv` version manager generates when setting a directory-level version via `pyenv local [version]`. Cloud Run would also recognize a `GOOGLE_PYTHON_VERSION` environment variable. Otherwise, it defaults to the most recent version.
+1. The Python version -- this one slipped past me as a backend noob. While I was familiar with the convention of documenting Python package dependencies in a `requirements.txt` file, I didn't realize that this only captures Python packages, not the Python version. For this, Cloud Run looks for a separate file called `.python-version` -- which is the file that the commonly used `pyenv` version manager generates when setting a directory-level version via `pyenv local [version]`. Cloud Run would also recognize a `GOOGLE_PYTHON_VERSION` environment variable. Otherwise, it defaults to the most recent version of Python.
 
-2. Webpack inputs -- despite being a streamlined path, the webpack UI requests input that looks a little arcane until you understand what it's asking. You also need to avoid another gotcha.
+2. Webpack inputs -- the webpack UI requests inputs that look a little arcane until you understand what it's asking.
 - Build context directory -- this is just the application root, e.g. `/` but in my case it is `/server` 
 - Entrypoint -- they want the command used to start the server. You can leave this blank, which is safest, because herein lies another gotcha. Locally, I go to the `/server` directory and run `uvicorn app.main:app --host 0.0.0.0 --port 8000` because I want to ensure the exact host and port I'm running on. But Cloud Run runs on port 8080, so specifying 8000 would lead to an error. The default is `uvicorn app.main:app` so leaving it blank works fine (see 'About entrypoints' below). 
-- Function target -- this doesn't apply, it's for 'function' oriented deployments instead of full APIs. Leave blank.
+- Function target -- this is only for 'serverless function' deployments. Leave blank for 'serverless web server'.
 
 
 **About entrypoints**
