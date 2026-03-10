@@ -1,16 +1,9 @@
-Starting a thread here to talk through plans and specific issues for migrating features from orcasound-next to orcasite, and adding Zustand for state management. 
-___
-1. **Feature flag**
+---
+title: "First look at Zustand state management"
+date: 2026-02-13
+---
 
-In orcasound-next, I set up a `MasterDataLayout` that bundles global state and external API calls, but wraps only my `/beta` page routes downstream from `_app.tsx`. Should I keep this strategy for PRs to orcasite?
-___
-2. **Combining server data with external APIs**
-
-Before getting into Zustand, the first thing to resolve is where to call the `useMasterData` hook in some top level context (I have it in `MasterDataLayout`). This runs a set of API calls to the server (human, machine, feeds) and external APIs (sightings, AIS) and combines them into a unified schema matched by time and location. The hook relies on React Query for all the underlying requests, so needs to live in React upstream of Zustand stores. 
-___
-3. **Zustand stores for global state context** 
-
-There are three contexts that should be migrated to Zustand stores:
+My [Orcasound Next](https://github.com/orcasound/orcasound-next) prototype has three contexts that should be migrated to Zustand stores:
 
 ***DataContext*** 
 - global filter state set by UI 
