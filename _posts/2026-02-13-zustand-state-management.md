@@ -3,7 +3,7 @@ title: "First look at Zustand state management"
 date: 2026-02-13
 ---
 
-My [Orcasound Next](https://github.com/orcasound/orcasound-next) prototype has three contexts that should be migrated to Zustand stores:
+The [Orcasound Next](https://github.com/orcasound/orcasound-next) prototype has three contexts that should be migrated to Zustand stores:
 
 **DataContext**
 - global filter state set by UI 
