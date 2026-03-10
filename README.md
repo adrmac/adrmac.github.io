@@ -7,7 +7,7 @@ Mar 6, 2026
 [Serverless deployment with Cloud Run - containers and webpacks](https://adrmac.github.io/2026/03/06/serverless-deployment-with-cloud-run.html)
 
 Feb 13, 2026
-[First look at Zustand State Management](https://adrmac.github.io/2026/02/13/zustand-state-management.html)
+[First look at Zustand State Management for Orcasound](https://adrmac.github.io/2026/02/13/zustand-state-management.html)
 
 Jan 24, 2026
 [ESP32 Agent strategy - Python to Typescript](https://adrmac.github.io/2026/01/24/esp32-agent-update.html)
