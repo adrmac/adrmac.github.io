@@ -5,6 +5,8 @@ date: 2026-03-10
 
 This week I am launching a user testing prototype for a temperature/humidity data monitoring interface built with TypeScript / React / Next.js: [https://esp32ui.vercel.app](https://esp32ui.vercel.app). 
 
+The app displays live data from the ESP32 sensor in my home office, mediated by a cloud-hosted Python API and PosgreSQL database. It includes a filter set for viewing the data over different time periods, aggregation buckets, and other adjustments. A user-controlled threshold setting defines the list of noteworthy Events. Each Event includes badges showing the severity of anomalies in the three key metrics, and an interpretive description.
+
 ___
 <img width="1705" height="942" alt="index1" src="https://github.com/user-attachments/assets/5cec38ab-9264-4e1d-a257-db6f82a2d334" />
 
@@ -12,9 +14,9 @@ _Home screen_
 ____
 
 #### Technical summary
-- I added a new `/timeseries` endpoint to my [Python API deployed on Cloud Run](https://adrmac.github.io/2026/03/06/serverless-deployment-with-cloud-run.html) for fetching raw data as well as aggregating averages by time bucket using SQL.
-- I am using React Query by Tanstack to fetch and cache the data in the browser.
-- I am iterating the interface using the Codex plugin in VS Code to ‘vibe-code’ in TypeScript with the Devias Pro MUI UI Kit template and Apex Charts.
+- I added a new `/timeseries` endpoint to the [serverless Python API deployed on Cloud Run](https://adrmac.github.io/2026/03/06/serverless-deployment-with-cloud-run.html) for fetching raw data and aggregating averages by time bucket using SQL.
+- I am using React Query by Tanstack to fetch and cache data requests in the browser.
+- I am iterating on the interface using the Codex plugin in VS Code to ‘vibe-code’ in TypeScript with the Devias Pro MUI UI Kit template and Apex Charts.
 
 ___
 #### Approach
