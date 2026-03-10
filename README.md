@@ -1,7 +1,7 @@
 Read my [blog](https://adrmac.github.io/)
 
 Mar 10, 2026
-[React user interface launch - temperature / humidity anomaly monitor](https://adrmac.github.io/2026/03/10/esp32-dashboard-launch.html)
+[React user interface - temperature / humidity anomaly monitor](https://adrmac.github.io/2026/03/10/esp32-dashboard-launch.html)
 
 Mar 6, 2026
 [Serverless deployment with Cloud Run - containers and webpacks](https://adrmac.github.io/2026/03/06/serverless-deployment-with-cloud-run.html)
