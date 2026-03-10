@@ -1,5 +1,5 @@
 ---
-title: "Serverless deployment with Cloud Run - repos, containers, and webpacks"
+title: "Serverless deployment with Cloud Run - containers and webpacks"
 date: 2026-03-06
 ---
 
