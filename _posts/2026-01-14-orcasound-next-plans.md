@@ -1,5 +1,5 @@
 ---
-title: "Plans for Orcasound-Next"
+title: "Plans for Orcasound-Next - prototype to production"
 date: 2026-01-14
 ---
 
