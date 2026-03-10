@@ -16,7 +16,7 @@ Jan 16, 2026
 [What's my job title? UX Engineer / AI Architect](https://adrmac.github.io/2026/01/16/whatsmyjobtitle-uxengineer-aiarchitect.html)
 
 Jan 14, 2026
-[Plans for Orcasound Next](https://adrmac.github.io/2026/01/14/orcasound-next-plans.html)
+[Plans for Orcasound Next - prototype to production](https://adrmac.github.io/2026/01/14/orcasound-next-plans.html)
 
 Dec 17, 2025
 [Open Source Agents](https://adrmac.github.io/2025/12/08/open-source-agents.html)
