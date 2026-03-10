@@ -5,16 +5,16 @@ date: 2026-02-13
 
 My [Orcasound Next](https://github.com/orcasound/orcasound-next) prototype has three contexts that should be migrated to Zustand stores:
 
-***DataContext*** 
+**DataContext**
 - global filter state set by UI 
 - resulting array of filtered data 
 - array of new objects derived from filtered data 
 - summary metrics about filtered data
 
-***LayoutContext***
+**LayoutContext**
 - UI states that persist across page routes
 
-***NowPlayingContext***
+**NowPlayingContext**
 - global audio player controls
 - Web Audio API analyser node
 
