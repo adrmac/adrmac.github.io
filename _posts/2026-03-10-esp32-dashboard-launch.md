@@ -3,7 +3,7 @@ title: "ESP32 user interface prototype launch"
 date: 2026-03-10
 ---
 
-This week I am launching an MVP prototype for a temperature/humidity data monitoring interface. Next.js provides convenient free deployment on Vercel at [https://esp32ui.vercel.app](https://esp32ui.vercel.app). 
+This week I am launching a user testing prototype for a temperature/humidity data monitoring interface built with TypeScript / React / Next.js: [https://esp32ui.vercel.app](https://esp32ui.vercel.app). 
 
 ___
 <img width="1705" height="942" alt="index1" src="https://github.com/user-attachments/assets/5cec38ab-9264-4e1d-a257-db6f82a2d334" />
