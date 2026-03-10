@@ -1,5 +1,5 @@
 ---
-title: "First look at Zustand state management"
+title: "First look at Zustand state management for Orcasound"
 date: 2026-02-13
 ---
 
