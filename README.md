@@ -1,7 +1,7 @@
 Read my [blog](https://adrmac.github.io/)
 
 Mar 6, 2026
-[Serverless deployment with Cloud Run - of repos, containers, and webpacks](https://adrmac.github.io/2026/03/06/serverless-deployment-with-cloud-run.html)
+[Serverless deployment with Cloud Run - containers and webpacks](https://adrmac.github.io/2026/03/06/serverless-deployment-with-cloud-run.html)
 
 Feb 13, 2026
 [Zustand State Management](https://adrmac.github.io/2026/02/13/zustand-state-management.html)
