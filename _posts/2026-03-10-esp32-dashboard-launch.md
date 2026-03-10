@@ -112,6 +112,8 @@ I'd like to rework the text of the detail drawers to include more comprehensive 
 - % of time within thresholds
 - data completeness / confidence
 
+If I later have an LLM agent summarizing the event or comparing it to other snapshots, I want to give it useful details to work with.
+
 _Data completeness_
 
 There should be a separate dashboard panel that shows whether there have been any dropouts from the data stream, or any slowdowns in the pace of data from an expected 2-sec cadence. This could affect the interpretation of the event if there is some correlation between data dropouts and unusual readings, so makes sense to include in the same vertical stack as other time series on the main page. 
