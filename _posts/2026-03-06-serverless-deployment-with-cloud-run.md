@@ -24,19 +24,23 @@ Just because Orcasound has a container doesn't mean it would be deployable on Cl
 
 **About virtual machines**
 
-Virtual machines are cloud servers. When companies say they are going "serverless" they might mean they are moving from an on-premises server to the cloud. But in fact this is still a "serverful" architecture.
+Virtual machines are cloud servers. When companies say they are going "serverless" they might mean they are moving from an on-premises server to the cloud. But in fact this is still a "serverful" architecture from a developer's perspective.
 
 Orcasound has a serverful architecture using Heroku. This is a managed platform that runs on top of Amazon Web Services (AWS) EC2, a large virtual machine. Each Heroku customer gets their own container called a Dyno that operates like an always-on VM, while under the hood it shares a large VM with other customers. Each Dyno boots up a full Linux system environment, so it can't start and stop instantly like a serverless container. 
 
-**About serverless platforms**
+**About serverless web servers**
 
 Instead of a VM, Cloud Run uses a proprietary stack where each container lives in its own Google-managed gVisor sandbox. Google keeps a massive pool of "warm" resources ready to execute code at a millisecond's notice, as long as the code is "stateless" and can go back to nothing. AWS App Runner is a direct competitor to Cloud Run, although it lacks a 'zero' state and requires at least one instance. 
 
-These platforms are for deploying an entire "serverless web server" like an API, but there is another class of platforms for "serverless functions" -- such as AWS Lambda. These are designed for short-lived, event-driven tasks -- so could be an option for ESP32 sensor posting data.
+These platforms are for deploying an entire "serverless web server" like a Python API. This phrase is not a contradiction, because "serverless" refers to the hosting platform, and "web server" refers to the code. 
+
+**About serverless functions**
+
+There is another class of platform for "serverless functions" -- including AWS Lambda, or function targets inside of Cloud Run. These are designed for short-lived, event-driven tasks -- so could be an option for ESP32 sensor posting data.
 
 **About cold starts**
 
-Because my esp32_api serverless container receives data every 2 seconds, it most likely stays alive and never spins down -- idle time is about 15 seconds. This means the React UI might benefit from accessing an already-live container without cold start -- until there is enough traffic that Cloud Run needs to cold-start a new container to handle concurrent load.
+Because my esp32_api serverless web server receives data every 2 seconds, it most likely stays alive and never spins down -- idle time is about 15 seconds. This means the React UI might benefit from accessing an already-live container without cold start -- until there is enough traffic that Cloud Run needs to cold-start a new container to handle concurrent load.
 
 To monitor cold starts in GCP:
 - Cloud Run Metrics Tab: Look at the "Container Instance Count" graph. If you see the line drop to 0 and then jump to 1, the first request at that "jump" was a cold start.
@@ -54,19 +58,18 @@ Right now I don't have specific system dependencies beyond the Python version. I
 
 **About webpacks**
 
-Even with the default webpack, there are some assumptions and gotchas that are good to be aware of. 
+Even with the default Python webpack, there are some assumptions and gotchas that are good to be aware of. 
 
-1. The Python version -- this one slipped past me as a backend noob. While I was familiar with the convention of documenting Python package dependencies in a `requirements.txt` file, I didn't realize that this only captures Python packages, not the Python version. For this, Cloud Run looks for a separate file called `.python-version` -- which is the file that the commonly used `pyenv` version manager generates when setting a directory-level version via `pyenv local [version]`. Cloud Run would also recognize a `GOOGLE_PYTHON_VERSION` environment variable. Otherwise, it defaults to the most recent version of Python.
+1. The Python version -- this one slipped past me as a backend noob. While I was familiar with the convention of documenting Python package dependencies in a `requirements.txt` file, I didn't realize that this only captures Python packages, not the Python version. For this, Cloud Run looks for a separate file called `.python-version` -- which is exactly the file that the `pyenv` version manager generates when setting a directory-level version via `pyenv local [version]`. (Cloud Run would also recognize a `GOOGLE_PYTHON_VERSION` environment variable. Otherwise, it defaults to the most recent version of Python.)
 
 2. Webpack inputs -- the webpack UI requests inputs that look a little arcane until you understand what it's asking.
 - Build context directory -- this is just the application root, e.g. `/` but in my case it is `/server` 
 - Entrypoint -- they want the command used to start the server. You can leave this blank, which is safest, because herein lies another gotcha. Locally, I go to the `/server` directory and run `uvicorn app.main:app --host 0.0.0.0 --port 8000` because I want to ensure the exact host and port I'm running on. But Cloud Run runs on port 8080, so specifying 8000 would lead to an error. The default is `uvicorn app.main:app` so leaving it blank works fine (see 'About entrypoints' below). 
-- Function target -- this is only for 'serverless function' deployments. Leave blank for 'serverless web server'.
-
+- Function target -- this is only for 'serverless function' deployments. Leave blank for a web server.
 
 **About entrypoints**
 
-You can manually set the entrypoint in the Cloud Run UI or in a `Procfile`, or leave it blank to have Cloud Run detect it automatically. The entrypoint detection process will wrap the app code in one of two kinds of Python web server interfaces:
+You can manually set the entrypoint (the command used to start the app) in the Cloud Run UI or in a `Procfile`, or leave it blank to have Cloud Run detect it automatically. The entrypoint detection process will wrap the app code in one of two kinds of Python web server interfaces:
 1. Gunicorn = a WSGI (web server gateway interface), the traditional standard for Python, used by Flask/Django
 2. Uvicorn = an ASGI (asynchronous server gateway interface), the newer standard used for high-performance, asynchronous apps like FastAPI
 
@@ -75,16 +78,29 @@ If Cloud Run detects FastAPI, it will assume an ASGI environment and use Uvicorn
 
 **About virtual environments (venv)**
 
-A venv is used in Python development, not so much in production deployment. But I was a little hazy about the difference between a venv and a container so needed to clarify. Basically a venv is a Python-native feature that only captures Python dependencies, while a container is a snapshot of an entire system environment including OS and system-level dependencies. The Python version is a system-level dependency. When you activate a venv it will _try_ to use the same version of Python it was created with, but it doesn't bring the Python installation with it, just the Python packages. In production, Cloud Run doesn't use a venv at all, it installs dependencies from requirements.txt directly to the container environment. 
+A venv is used in Python development, not so much in production deployment. But I was a little hazy about the difference between a venv and a container so needed to clarify. 
+
+Basically a venv is a Python-native feature that only captures Python dependencies, while a container is a snapshot of an entire system environment including OS and system-level dependencies. 
+
+The Python version is a system-level dependency. When you activate a venv it will _try_ to use the same version of Python it was created with, but it doesn't bring the Python installation with it, just the Python packages. 
+
+In production, Cloud Run installs dependencies from requirements.txt directly to the container environment, so no venv involved. 
 
 
 **About Docker Compose**
 
-The Orcasound app doesn't just have a Dockerfile -- it also has a Docker Compose setup with a few elements to be familiar with. 
+The Orcasound app has a Dockerfile, but it also has a Docker Compose setup. This is because it has actually has multiple containers working together:
+- web = app container
+- db = PostGIS database container. PostGIS is an extension installed inside the Docker container that adds geospatial capabilities to PostgreSQL. 
+- cache = Redis container. Redis (Remote Dictionary Server) is an exceptionally fast in-memory data store that keeps data in RAM rather than on a physical disk.
 
-Relevant files:
+The Redis cache likely handles Websocket connections for the live audio streams. For ESP32, it could be a way to show a live temperature reading without querying the main Postgres db every time. You would post the latest reading to Redis for the UI to grab instantly.
+
+Digging into these should be another post. But these are the relevant files:
 1. `.devcontainer/devcontainer.json` - This triggers VS Code to automatically set up a development container when opening the repo. It points to three docker-compose.yml files that get merged together.
 2. `docker-compose.yml` -- the base setup
 3. `docker-compose.dev.yml` -- overrides for things needed for local dev
 4. `../docker-compose.yml` -- VS Code-specific settings in the `.devcontainer` folder, lets VS Code attach to the container as a development shell
 5. `Dockerfile` - defines how to build a container image. An image is a frozen snapshot of a filesystem and runtime. It is a template for creating containers. Docker Compose creates containers from images and defines how containers work together. 
+
+
