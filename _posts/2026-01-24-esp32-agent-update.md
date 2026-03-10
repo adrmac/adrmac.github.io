@@ -1,5 +1,5 @@
 ---
-title: "ESP32 Agent Update - Python to Typescript"
+title: "ESP32 Agent strategy - Python to Typescript"
 date: 2026-01-29
 ---
 
