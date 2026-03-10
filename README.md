@@ -7,7 +7,7 @@ Feb 13, 2026
 [Zustand State Management](https://adrmac.github.io/2026/02/13/zustand-state-management.html)
 
 Jan 24, 2026
-[ESP32 agent update](https://adrmac.github.io/2026/01/24/esp32-agent-update.html)
+[ESP32 agent update - Python to Typescript](https://adrmac.github.io/2026/01/24/esp32-agent-update.html)
 
 Jan 16, 2026
 [What's my job title? Frontend Engineer (Product UI & Architecture)](https://adrmac.github.io/2026/01/16/whatsmyjobtitle-frontend-engineer-product-ui-architecture.html)
