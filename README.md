@@ -1,6 +1,6 @@
 # [Adrian development blog](https://adrmac.github.io/)
 
-Documenting things I am learning and want to remember
+Documenting things I am doing
 
 ## Posts
 
