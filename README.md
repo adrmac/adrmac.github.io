@@ -4,6 +4,11 @@ Documenting things I am doing
 
 ## Posts
 
+### Mar 14, 2026
+
+### [Setting up a bioacoustic analysis API for Orcasound hydrophones](https://adrmac.github.io/2026/03/14/bioacoustic-analysis-api.html)
+
+
 ### Mar 10, 2026
 
 ### [React user interface \- temperature / humidity anomaly monitor](https://adrmac.github.io/2026/03/10/esp32-dashboard-launch.html)

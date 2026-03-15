@@ -1,5 +1,5 @@
 ---
-title: "My next API - bio-acoustic analysis of Orcasound hydrophones"
+title: "Setting up a bioacoustic analysis API for Orcasound hydrophones (part 1)"
 date: 2026-03-14
 ---
 
@@ -176,4 +176,19 @@ orcasound_noise @ git+https://github.com/orcasound/ambient-sound-analysis.git
 
 This is one of the benefits of having `ambient-sound-analysis` as an installable package -- it brings all of its other dependency packages (`librosa`, `matplotlib`, `orca-hls-utils`, etc) with it. Good thing we installed `git` in the container. 
 
+From here, don't set up a venv -- just install straight to the container.
+```bash
+pip install -r requirements.txt
+```
 
+
+### Coming up (part 2)
+
+Importing the package:
+
+```python
+import pandas as pd
+from orcasound_noise.pipeline.pipeline import NoiseAnalysisPipeline
+from orcasound_noise.utils import Hydrophone
+import datetime as dt
+```
