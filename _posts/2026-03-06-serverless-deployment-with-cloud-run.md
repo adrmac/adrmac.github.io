@@ -26,7 +26,7 @@ Just because Orcasound has a container doesn't mean it would be deployable on Cl
 
 Virtual machines are cloud servers. When companies say they are going "serverless" they might mean they are moving from an on-premises server to the cloud. But in fact this is still a "serverful" architecture from a developer's perspective.
 
-Orcasound has a serverful architecture using Heroku. This is a managed platform that runs on top of Amazon Web Services (AWS) EC2, a large virtual machine. Each Heroku customer gets their own container called a Dyno that operates like an always-on VM, while under the hood it shares a large VM with other customers. Each Dyno boots up a full Linux system environment, so it can't start and stop instantly like a serverless container. 
+Orcasound has a cloud-hosted serverful architecture using Heroku. This is a managed platform that runs on top of Amazon Web Services (AWS) EC2, a large virtual machine. Each Heroku customer gets their own container called a Dyno that operates like an always-on VM, while under the hood it shares a large VM with other customers. Each Dyno boots up a full Linux system environment, so it can't start and stop instantly like a serverless container. 
 
 **About serverless web servers**
 
@@ -89,14 +89,14 @@ In production, Cloud Run installs dependencies from requirements.txt directly to
 
 **About Docker Compose**
 
-The Orcasound app has a Dockerfile, but it also has a Docker Compose setup. This is because it has actually has multiple containers working together:
+The Orcasound app has a Dockerfile, but it also has a Docker Compose setup. This is because it actually has multiple containers working together:
 - web = app container
 - db = PostGIS database container. PostGIS is an extension installed inside the Docker container that adds geospatial capabilities to PostgreSQL. 
 - cache = Redis container. Redis (Remote Dictionary Server) is an exceptionally fast in-memory data store that keeps data in RAM rather than on a physical disk.
 
 The Redis cache likely handles Websocket connections for the live audio streams. For ESP32, it could be a way to show a live temperature reading without querying the main Postgres db every time. You would post the latest reading to Redis for the UI to grab instantly.
 
-Digging into these should be another post. But these are the relevant files:
+Digging into these and potentially using this setup for the ESP32 app should be another post. But these are the relevant files:
 1. `.devcontainer/devcontainer.json` - This triggers VS Code to automatically set up a development container when opening the repo. It points to three docker-compose.yml files that get merged together.
 2. `docker-compose.yml` -- the base setup
 3. `docker-compose.dev.yml` -- overrides for things needed for local dev
@@ -104,3 +104,84 @@ Digging into these should be another post. But these are the relevant files:
 5. `Dockerfile` - defines how to build a container image. An image is a frozen snapshot of a filesystem and runtime. It is a template for creating containers. Docker Compose creates containers from images and defines how containers work together. 
 
 
+**Adding Ollama to Docker Compose**
+
+For the production ESP32_api running on Google Cloud Run, I have not yet enabled the /query endpoint that invokes LLMs running on an Ollama server. To prepare for this as well as the possibility of using Ollama for Orcasound, I need to add an Ollama service to the Docker container. For Orcasound, this means adding it as a service to the docker-compose.yml setup, alongside 'web', 'db', and 'cache.'
+
+```yml
+services:
+  web:
+  ...
+    environment:
+    ...
+    - OLLAMA_HOST=http://ollama:11434
+  db:
+  ...
+  cache:
+  ...
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+
+volumes:
+  cache:
+  ...
+  ollama:
+    driver: local
+```
+
+This creates a named service inside the container called 'ollama' that other container services can talk to, with a running Ollama instance. When the container mounts, it installs the latest Ollama server image, and makes it available from the terminal at the Ollama default port 11434. It also stores model state to an internal volume /root/.ollama in the Linux container that persists between restarts. 
+
+Apps can call the Ollama instance using the OLLAMA_HOST environment variable. 
+
+from python:
+
+```python
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+```
+
+or from terminal:
+
+```bash
+curl $OLLAMA_HOST
+```
+
+
+**Using Ollama inside Docker Compose**
+
+A terminal inside the 'web' service in VS Code can't access the Ollama server via CLI. To download models to the Ollama container, we can either: 
+
+1. Open a terminal outside the running dev container, inside the same folder, and use the docker compose CLI to open a shell for the running service:
+
+Show mounted images in the docker composition:
+```bash
+docker compose ps
+```
+
+Open a terminal shell for the 'ollama' service (ctrl-D to escape or type 'exit'):
+```bash
+docker compose exec ollama sh
+```
+
+List downloaded models or download new models:
+```bash
+ollama list
+ollama pull nomic-embed-text
+ollama pull qwen2.5:latest
+```
+
+2. Interact with the Ollama server from inside the web service via HTTP.
+
+List downloaded models:
+```bash
+curl $OLLAMA_HOST/api/tags
+```
+
+Download new models -- these lines can be part of the standard container setup flow, but not necessarily an automatic startup script:
+```bash
+curl $OLLAMA_HOST/api/pull -d '{"name":"nomic-embed-text"}'
+curl $OLLAMA_HOST/api/pull -d '{"name":"qwen2.5:latest"}'
+```

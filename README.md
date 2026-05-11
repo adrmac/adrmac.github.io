@@ -4,9 +4,19 @@ Documenting things I am doing
 
 ## Posts
 
+### May 11, 2026
+
+### [Building out an interactive spatial audio concept for the Electric Sky festival](https://adrmac.github.io/2026/05/11/interactive-spatial-audio.html)
+
+
+### Mar 17, 2026
+
+### [Bioacoustic analysis API for Orcasound hydrophones, part 2](https://adrmac.github.io/2026/03/17/bioacoustic-analysis-api-2.html)
+
+
 ### Mar 14, 2026
 
-### [Setting up a bioacoustic analysis API for Orcasound hydrophones](https://adrmac.github.io/2026/03/14/bioacoustic-analysis-api.html)
+### [Bioacoustic analysis API for Orcasound hydrophones, part 1](https://adrmac.github.io/2026/03/14/bioacoustic-analysis-api.html)
 
 
 ### Mar 10, 2026
